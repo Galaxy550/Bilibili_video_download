@@ -38,3 +38,87 @@ Bilibili 视频下载工具 | 支持本地解析与在线 API 两种模式，自
 验证安装：
 ```bash
 ffmpeg -version
+
+## 快速开始
+
+### 1. 克隆仓库
+
+```bash
+git clone https://github.com/galaxy550/bilibili-video-downloader.git
+cd bilibili-video-downloader
+```
+
+### 2. 安装依赖
+
+- 需自行安装好 [ffmpeg](https://ffmpeg.org/download.html) 并添加到系统 PATH
+
+```bash
+pip install requests
+```
+
+### 3. 运行程序
+
+```bash
+python bilibili_downloader.py
+```
+
+或 **直接双击** `bilibili_downloader.py` 运行（Windows）
+
+---
+
+## 使用说明
+
+启动后选择模式：
+
+```
+输入想要选择的模式: 1.本地模式 2.在线模式:
+```
+
+### 模式 1：本地模式
+
+适用于已有 B站视频 **抓包数据** 的情况（如从浏览器开发者工具复制）。
+
+1. 在 [Reqable](https://reqable.com/) 中将包含视频信息的 JSON 保存为文本文件
+2. 输入文件路径
+3. 选择画质质量（`1-N`，1 为最高清）
+4. 等待下载完成
+
+### 模式 2：在线模式
+
+通过 B站 API 直接获取视频流。
+
+1. 准备包含 `aid`、`cid`、`bvid` 的 JSON 文件（可用 `view.json`）
+2. 输入 JSON 文件路径
+3. 输入浏览器 Cookie 中的 `SESSDATA`（用于获取高清/会员视频）
+4. 自动解析并下载
+
+#### 如何获取 SESSDATA？
+
+1. 登录 [Bilibili](https://www.bilibili.com)
+2. 按 `F12` 打开开发者工具 → **Application/应用** → **Cookies**
+3. 找到 `SESSDATA` 字段，复制其值
+
+> ⚠️ **注意**：SESSDATA 是敏感信息，请勿分享给他人！
+
+---
+
+## 输出文件
+
+- **默认输出**：`output.mp4`（保存在脚本同级目录）
+- **若文件已存在**：自动覆盖！！！
+
+---
+
+## 技术细节
+
+| 模式 | 实现方式 |
+|:---|:---|
+| 本地模式 | 正则提取 JSON 中的 `baseUrl`，支持视频/音频分离链接 |
+| 在线模式 | 调用 B站 `x/player/playurl` API，优先解析 DASH 格式，回退 durl 单文件 |
+| 合并方式 | `ffmpeg -c copy` 快速流复制，不重新编码 |
+
+---
+
+## 免责声明
+
+本工具仅供学习交流使用，请勿用于侵犯版权或违反 B站用户协议的行为。下载的视频版权归 Bilibili 及原作者所有。
