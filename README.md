@@ -87,10 +87,9 @@ python bilibili_downloader.py
 
 通过 B站 API 直接获取视频流。
 
-1. 准备包含 `aid`、`cid`、`bvid` 的 JSON 文件（可用 `view.json`）
-2. 输入 JSON 文件路径
-3. 输入浏览器 Cookie 中的 `SESSDATA`（用于获取高清/会员视频）
-4. 自动解析并下载
+1. 输入视频的BV号
+2. 输入浏览器 Cookie 中的 `SESSDATA`（用于获取高清/会员视频）
+3. 自动解析并下载
 
 #### 如何获取 SESSDATA？
 
@@ -105,20 +104,9 @@ python bilibili_downloader.py
 ## 输出文件
 
 - **默认输出**：`output.mp4`（保存在脚本同级目录）
-- **若文件已存在**：自动覆盖！！！
+- **若文件已存在**：会自动覆盖！！！
 
 ---
 
-## 技术细节
-
-| 模式 | 实现方式 |
-|:---|:---|
-| 本地模式 | 正则提取 JSON 中的 `baseUrl`，支持视频/音频分离链接 |
-| 在线模式 | 调用 B站 `x/player/playurl` API，优先解析 DASH 格式，回退 durl 单文件 |
-| 合并方式 | `ffmpeg -c copy` 快速流复制，不重新编码 |
-
----
-
-## 免责声明
 
 本工具仅供学习交流使用，请勿用于侵犯版权或违反 B站用户协议的行为。下载的视频版权归 Bilibili 及原作者所有。
